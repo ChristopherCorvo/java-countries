@@ -18,6 +18,7 @@ public class Country
     @GeneratedValue(strategy = GenerationType.AUTO)
 
     // These are my table fields
+    private long countryid;
     private String name;
     private long population;
     private long landmasskm2;
