@@ -12,13 +12,13 @@ import javax.persistence.*;
 
 public class Country
 {
-    // What is this?
+    // @Id and @@GeneratedValue(strategy = GenerationType.AUTO) are
+    // annotations for your primary key. They will automatically generate
+    // a unique id for every Country obj
     @Id
-    // What is this?
     @GeneratedValue(strategy = GenerationType.AUTO)
+    private long countryid; // primary key
 
-    // These are my table fields
-    private long countryid;
     private String name;
     private long population;
     private long landmasskm2;
@@ -27,10 +27,11 @@ public class Country
     // This is my default constructor - required for Spring Data JPA
     public Country()
     {
-        // Default Constructor
+        // Default Constructor needed for JPA
     }
 
-    // Personally made constructor with parameters
+    // Constructor with parameters -- remember a class can have
+    // many constructors as long as they have different parameters.
     public Country(
         String name,
         long population,
@@ -43,7 +44,17 @@ public class Country
         this.medianage = medianage;
     }
 
-    // These are my Getter and Setter methods for the above fields
+    // ------- Getters and Setters -------
+    public long getCountryid()
+    {
+        return countryid;
+    }
+
+    public void setCountryid(long countryid)
+    {
+        this.countryid = countryid;
+    }
+
     public String getName()
     {
         return name;

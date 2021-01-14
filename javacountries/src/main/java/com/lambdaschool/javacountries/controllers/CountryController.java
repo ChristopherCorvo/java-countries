@@ -13,15 +13,18 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 
-// What is this?
+// Spring Annotation that tells Spring there will be endpoints in
+// this class.
 @RestController
 public class CountryController
 {
-    // What is this?
+    // Spring Annotation that performs field injections
+    // What it is doing is creating an instance of the corepos repository
     @Autowired
     CountryRepository corepos;
 
-    // What is this?
+    // Here we are making a method that will return an ArrayList of type Country.
+    // The method will take in two parameters. One being an ArrayList of type Country
     private List<Country> findCountries(List<Country> myList, CheckCountry tester)
     {
         List<Country> tempList = new ArrayList<>();
@@ -33,15 +36,13 @@ public class CountryController
                 tempList.add(c);
             }
         }
-
         return tempList;
     }
 
 
     // ------ Web Endpoints -------
-
+    // ---------- Get requests -----------
     // http://localhost:2019/names/all
-
     @GetMapping(value = "/names/all", produces = "application/json")
     public ResponseEntity<?> listAllCountries()
     {
@@ -52,6 +53,7 @@ public class CountryController
     }
 
     // http://localhost:2019/names/start/u
+    // remember that the @PathVariable char letter is case sensitive
     @GetMapping(value = "/names/start/{letter}", produces = "application/json")
     public ResponseEntity<?> listAllCountriesByName(@PathVariable char letter)
     {
@@ -87,7 +89,7 @@ public class CountryController
         corepos.findAll().iterator().forEachRemaining(myList::add);
 
         myList.sort((c1,c2) -> (int)(c1.getPopulation() - c2.getPopulation()));
-        return new ResponseEntity<>(myList, HttpStatus.OK);
+        return new ResponseEntity<>(myList.get(0), HttpStatus.OK);
     }
 
     // http://localhost:2019/population/max
@@ -98,7 +100,7 @@ public class CountryController
         corepos.findAll().iterator().forEachRemaining(myList::add);
 
         myList.sort((c1,c2) -> (int)(c2.getPopulation() - c1.getPopulation()));
-        return new ResponseEntity<>(myList, HttpStatus.OK);
+        return new ResponseEntity<>(myList.get(0), HttpStatus.OK);
     }
 
     // Stretch:
@@ -109,8 +111,9 @@ public class CountryController
         List<Country> myList = new ArrayList<>();
         corepos.findAll().iterator().forEachRemaining(myList::add);
 
-        myList.sort((c1,c2) -> (int)(c1.getPopulation() + c2.getPopulation() / c1.getPopulation()));
-        return new ResponseEntity<>(myList, HttpStatus.OK);
+        myList.sort((c1,c2) -> (int)(c1.getPopulation() + c2.getPopulation()));
+        int medianNum = (myList.size()/2) - 1;
+        return new ResponseEntity<>(myList.get(medianNum), HttpStatus.OK);
     }
 
 
